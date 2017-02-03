@@ -17,6 +17,8 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.Hidden;
 
 /**
  *
@@ -38,10 +40,7 @@ public class ProjectRevisionBundleConverter
         String requestData="";
         String baseURL = GWT.getHostPageBaseURL();
         String convertURL = baseURL + "convert?ontology=" + encodedProjectName + "&revision=" + revisionnumber.getValue();
-      //  boolean opened=openedPage();
-        //controllo se la pagina è stata aperta da un'altra pagina, in modo da avere un riferimento a cui inviare l'ontologia in RDF/XML
-      //  if(opened==true)
-      //  { //invio la richiesta alla servlet per ottenere l'ontologia convertita!!!
+     
         RequestBuilder request= new RequestBuilder(RequestBuilder.GET,convertURL);
         try
         {
@@ -72,20 +71,15 @@ public class ProjectRevisionBundleConverter
     
     /* Funzioni javascript utilizzate, scritte seguendo la sintassi di JSNI*/
     
- /*   
-    private native boolean openedPage()/*-{ 
-             var Windowreference=$wnd.opener;
-             if(Windowreference==null)
-            {
-            $wnd.alert("devi aprire la pagina da http://localhost:3020/trill_on_swish per utilizzare questa funzionalità");
-            return false;
-            }
-            return true;
-             }-;*/
 
-  private native void returnTObundle(String converted)/*-{
-      $wnd.opener.postMessage(converted,"http://localhost:8080/BundleQueryInterface/BundleQuery.jsp");
-      $wnd.alert("messaggio inviato");
-}-*/;
+
+  private  void returnTObundle(String converted) {
+      FormPanel  form = new FormPanel("_blank");
+      form.setAction("http://localhost:8080/BundleQueryInterface/BundleQuery.jsp");
+      form.setMethod(FormPanel.METHOD_POST);
+      Hidden onto = new Hidden("ontology", converted);
+      form.add(onto);
+      form.submit();
+  }
 
     }
