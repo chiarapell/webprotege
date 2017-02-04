@@ -53,4 +53,5 @@ public class Query
         {this.needProperty=needProperty;
         }
      
+     
     }
