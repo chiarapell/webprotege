@@ -52,7 +52,6 @@ public class Query
      public void setNeedProperty(boolean needProperty)
         {this.needProperty=needProperty;
         }
-     
-     
+         
      
     }
